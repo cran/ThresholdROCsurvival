@@ -1,0 +1,28 @@
+# Exported functions
+export("th_ICT", "th_ME", "th_survivalROC", "AUC_ICT", "AUC_ME")
+
+# Imported functions
+importFrom(survivalROC, survivalROC)
+importFrom(InformativeCensoring, col.headings)
+importFrom(InformativeCensoring, ScoreImpute)
+importFrom(InformativeCensoring, ExtractSingle)
+importFrom(InformativeCensoring, NN.options)
+importFrom(survival, survfit)
+importFrom(survival, Surv)
+importFrom(boot, boot)
+importFrom(boot, boot.ci)
+importFrom(ThresholdROC, thres2)
+importFrom(ThresholdROC, plotCostROC)
+importFrom(graphics, par, points)
+importFrom(stats, qnorm, sd)
+importFrom(pROC, roc)
+importFrom(pROC, var)
+importFrom(graphics, boxplot)
+importFrom(psych, winsor.mean, winsor.var)
+
+
+# S3 methods
+S3method(print, "th_ICT")
+S3method(print, "th_survivalROC")
+S3method(print, "AUC_ME")
+S3method(print, "AUC_ICT")
