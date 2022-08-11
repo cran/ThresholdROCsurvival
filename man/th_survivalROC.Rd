@@ -56,7 +56,7 @@ Confidence intervals are obtained using normal and percentile bootstrap. In norm
 \value{
 An object of class \code{th_survivalROC}, which is a list with the following components:
 
-\item{T }{A list of four elements:}
+\item{T }{A list of four elements:
 
   \code{thres}  threshold estimate.
   
@@ -66,7 +66,9 @@ An object of class \code{th_survivalROC}, which is a list with the following com
   
   \code{R}  R term, the product of the non-disease odds and the cost ratio (for further details about this concept, see \bold{References}).
   
-\item{CI }{A list of five elements (or \code{NULL} if \code{ci=FALSE}):}
+  }
+  
+\item{CI }{A list of five elements (or \code{NULL} if \code{ci=FALSE}):
 
   \code{lower.norm}  the lower limit of the confidence interval using normal bootstrap.
 
@@ -83,6 +85,8 @@ An object of class \code{th_survivalROC}, which is a list with the following com
   \code{ci.method} method used for the confidence intervals calculation.
   
   \code{B} number of bootstrap resamples.
+  
+  }
 }
 \references{
 Heagerty PJ, Lumley T, Pepe MS. Time-Dependent ROC Curves for Censored Survival Data and a Diagnostic Marker. Biometrics 2000; 56(2): 337-344. doi: 10.1111/j.0006-341X.2000.00337.x

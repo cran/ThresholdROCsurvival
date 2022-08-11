@@ -61,13 +61,13 @@ For parameter \code{method} the user can choose between \code{"normal"} (assumes
 Confidence intervals are calculated using the standard error proposed by Rubin (1987).
 
 R, mentioned in parameters \code{costs} and \code{R}, is the product of the non-disease odds and the cost ratio:
-\deqn{R=(1-p)/p (C_{TN}-C_{FP})/(C_{TP}-C_{FN}),}
+\deqn{R=((1-p)/p)((C_{TN}-C_{FP})/(C_{TP}-C_{FN})),}
 where \emph{p} is the disease prevalence (estimated using Kaplan-Meier) and \emph{C_i} are the classification costs.
 }
 \value{
 An object of class \code{th_ICT}, which is a list with the following components:
 
-\item{T }{A list of five elements:}
+\item{T }{A list of five elements:
 
   \code{thres}  threshold estimate.
   
@@ -79,7 +79,9 @@ An object of class \code{th_ICT}, which is a list with the following components:
   
   \code{method}  method used in the estimation.
   
-\item{CI }{A list of five elements (or \code{NULL} if \code{ci=FALSE}):}
+  }
+  
+\item{CI }{A list of five elements (or \code{NULL} if \code{ci=FALSE}):
 
   \code{lower}  the lower limit of the confidence interval.
 
@@ -90,6 +92,28 @@ An object of class \code{th_ICT}, which is a list with the following components:
   \code{alpha}  significance level provided by the user.
   
   \code{ci.method} method used for the confidence intervals calculation.
+  
+  }
+
+\item{sens}{A list of three elements:
+
+  \code{est} estimate of sensitivity at \code{thres}.
+  
+  \code{lower} the lower limit of the confidence interval for the estimate of sensitivity at \code{thres} (\code{NULL} if \code{ci=FALSE}).
+  
+  \code{upper} the upper limit of the confidence interval for the estimate of sensitivity at \code{thres} (\code{NULL} if \code{ci=FALSE}).
+  
+  }
+  
+\item{spec}{A list of three elements:
+
+  \code{est} estimate of specificity at \code{thres}.
+  
+  \code{lower} the lower limit of the confidence interval for the estimate of specificity at \code{thres} (\code{NULL} if \code{ci=FALSE}).
+  
+  \code{upper} the upper limit of the confidence interval for the estimate of specificity at \code{thres} (\code{NULL} if \code{ci=FALSE}).
+  
+  }
 
 \item{data }{A data.frame containing the following columns previously provided by the user: \code{cont.var}, \code{time} and \code{status}, and a new column \code{statusNA}, which contains the status of the subjects at time \code{predict.time} (0=no event, 1=event, \code{NA}=missing)}
 }
@@ -118,4 +142,6 @@ exp(res$T$thres)
 exp(res$CI$lower)
 exp(res$CI$upper)
 res$data
+res$sens
+res$spec
 }

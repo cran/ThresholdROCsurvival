@@ -35,14 +35,15 @@ function(cont.var, time, status, predict.time, m=10, ci=TRUE, alpha=0.05, range=
         #out.aux <- with(df, minCostThresholdROC(cont.var, status.new, rho, costs, method, var.equal, ci=TRUE, plot=FALSE, alpha=alpha, B=B))
         #out <- c(out.aux$T$thres, out.aux$CI$se)
         rocobj <- roc(status.new, df$cont.var, quiet=TRUE)
+        out <- c(as.numeric(rocobj$auc), sqrt(var(rocobj)))
       }else{
         out <- c(NA, NA)
       }
       #result[1, k] <- out[1]
       #result[2, k] <- out[2]
       #result[3, k] <- out[3]
-      result.AUC[1, k] <- as.numeric(rocobj$auc)
-      result.AUC[2, k] <- sqrt(var(rocobj))
+      result.AUC[1, k] <- out[1]
+      result.AUC[2, k] <- out[2]
     }
     # m estimates --> rubin
     est <- mean(result.AUC[1, ], na.rm=TRUE)

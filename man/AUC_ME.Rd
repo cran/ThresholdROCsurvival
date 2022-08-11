@@ -55,7 +55,7 @@ Robin X, Turck N, Hainard A, Tiberti N, Lisacek F, Sanchez JC, Muller M. pROC: a
 }
 \examples{
 data(NSCLC)
-res <- with(NSCLC, AUC_ME(log(COL), OS, ST, 1095, plot=FALSE))
+res <- with(NSCLC, AUC_ME(COL, OS, ST, 1095, plot=FALSE))
 res
 res$data
 }

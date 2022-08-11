@@ -58,8 +58,10 @@ First, the algorithm determines the status of the subjects at time \code{predict
 For parameter \code{method} the user can choose between \code{"normal"} (assumes binormality) or \code{"empirical"} (leaves out any distributional assumption). When \code{method="normal"}, the user can specify if the algorithm should assume equal or different variances using the parameter \code{var.equal}. For further details see the \code{thres2} function in the \code{ThresholdROC} package.
 
 R, mentioned in parameters \code{costs} and \code{R}, is the product of the non-disease odds and the cost ratio:
-\deqn{R=(1-p)/p (C_{TN}-C_{FP})/(C_{TP}-C_{FN}),}
+\deqn{R=((1-p)/p)((C_{TN}-C_{FP})/(C_{TP}-C_{FN})),}
 where \emph{p} is the disease prevalence (estimated using Kaplan-Meier) and \emph{C_i} are the classification costs.
+
+To calculate sensitivity, specificity and predictive values corresponding to the estimated threshold, we suggest to use the \code{diagnostic} function in the \code{ThresholdROC} package.
 }
 \value{
 An object of class \code{thres2}, which is a list of two components (see the help on the \code{thres2} function). Here we add a third component, \code{data}: a data.frame containing the following columns previously provided by the user: \code{cont.var}, \code{time} and \code{status}, and a new column \code{statusNA}, which contains the status of the subjects at time \code{predict.time} (0=no event, 1=event, \code{NA}=missing)

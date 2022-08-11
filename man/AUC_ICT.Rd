@@ -66,7 +66,7 @@ Wilcox, R. Introduction to Robust Estimation and Hypothesis Testing. 3rd Edition
 \examples{
 data(NSCLC)
 set.seed(2020)
-res <- with(NSCLC, AUC_ICT(log(COL), OS, ST, 1095, m=50))
+res <- with(NSCLC, AUC_ICT(COL, OS, ST, 1095, m=50))
 res
 res$data
 }
