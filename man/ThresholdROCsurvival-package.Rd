@@ -11,9 +11,9 @@ We focus on the estimation of optimal thresholds and AUCs when the outcome of in
 The functions in this package are \code{th_ME()}, \code{th_ICT()} and \code{th_survivalROC()} for threshold estimation and \code{AUC_ME()} and \code{AUC_ICT()} for AUC estimation.
 }
 \author{
-\packageAuthor{ThresholdROCsurvival}
+Sara Perez-Jaume and Josep L Carrasco
 
-Maintainer: \packageMaintainer{ThresholdROCsurvival}
+Maintainer: Sara Perez-Jaume
 }
 \references{
 Heagerty PJ, Lumley T, Pepe MS. Time-Dependent ROC Curves for Censored Survival Data and a Diagnostic Marker. Biometrics 2000; 56(2): 337-344. doi: 10.1111/j.0006-341X.2000.00337.x

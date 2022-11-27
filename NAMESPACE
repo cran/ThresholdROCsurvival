@@ -2,7 +2,7 @@
 export("th_ICT", "th_ME", "th_survivalROC", "AUC_ICT", "AUC_ME")
 
 # Imported functions
-importFrom(survivalROC, survivalROC)
+#importFrom(survivalROC, survivalROC)
 importFrom(InformativeCensoring, col.headings)
 importFrom(InformativeCensoring, ScoreImpute)
 importFrom(InformativeCensoring, ExtractSingle)
