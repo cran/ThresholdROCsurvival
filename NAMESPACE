@@ -1,5 +1,5 @@
 # Exported functions
-export("th_ICT", "th_ME", "th_survivalROC", "AUC_ICT", "AUC_ME")
+export("diagnostic_assessment_binary", "diagnostic_assessment_continuous")
 
 # Imported functions
 #importFrom(survivalROC, survivalROC)
@@ -15,6 +15,8 @@ importFrom(ThresholdROC, thres2)
 importFrom(ThresholdROC, plotCostROC)
 importFrom(graphics, par, points)
 importFrom(stats, qnorm, sd)
+importFrom(stats, prop.test)
+importFrom(stats, binom.test)
 importFrom(pROC, roc)
 importFrom(pROC, var)
 importFrom(graphics, boxplot)
@@ -22,7 +24,4 @@ importFrom(psych, winsor.mean, winsor.var)
 
 
 # S3 methods
-S3method(print, "th_ICT")
-S3method(print, "th_survivalROC")
-S3method(print, "AUC_ME")
-S3method(print, "AUC_ICT")
+S3method(print, "diagnostic_assessment")

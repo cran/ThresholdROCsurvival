@@ -19,7 +19,7 @@ minCostSurvivalROCOpt <- function(cont.var, time, status, predict.time, rho, cos
   C <- D*(se+sp*R+G)
   # look for optimum
   optimum <- data.frame(cutoff=cut2$cut[which.min(C)], C=C[which.min(C)])
-  out <- list(optimum=optimum, results=cut)
+  out <- list(optimum=optimum, results=cut, sens=se[which.min(C)], spec=sp[which.min(C)])
   # plot cont.var vs youden index
   if (plot){
     df.plot <- data.frame(cont.var=cut2$cut, C)
@@ -35,6 +35,20 @@ bootminCostSurvivalROC <- function(df, indices, predict.time, rho, costs, lambda
   # bootstrap resample
   df.boot <- df[indices, ]
   cut.boot <- with(df.boot, minCostSurvivalROCOpt(cont.var, time, status, predict.time, rho, costs, lambda, plot=FALSE))$optimum$cutoff
+  return(as.numeric(cut.boot))
+}
+
+bootminCostSurvivalROCsens <- function(df, indices, predict.time, rho, costs, lambda){
+  # bootstrap resample
+  df.boot <- df[indices, ]
+  cut.boot <- with(df.boot, minCostSurvivalROCOpt(cont.var, time, status, predict.time, rho, costs, lambda, plot=FALSE))$sens
+  return(as.numeric(cut.boot))
+}
+
+bootminCostSurvivalROCspec <- function(df, indices, predict.time, rho, costs, lambda){
+  # bootstrap resample
+  df.boot <- df[indices, ]
+  cut.boot <- with(df.boot, minCostSurvivalROCOpt(cont.var, time, status, predict.time, rho, costs, lambda, plot=FALSE))$spec
   return(as.numeric(cut.boot))
 }
 
@@ -294,8 +308,12 @@ survivalROC<-function( Stime, status, marker, entry=NULL,
        AUC=area)
 }
 
-
-
+survivalROCAUCboot <- function(df, indices, predict.time, lambda){
+  # bootstrap resample
+  df.boot <- df[indices, ]
+  auc.boot <- with(df.boot, survivalROC(Stime=time, status=status, marker=cont.var, predict.time=predict.time, method="NNE", lambda=lambda)$AUC)
+  return(as.numeric(auc.boot))
+}
 
 
 ### auxiliar functions for ThresholdROC (Skaltsa)
@@ -343,3 +361,23 @@ expit <- function(x){
 logit <- function(p){
   log(p/(1-p))
 }
+
+rubin_outliers <- function(matrix, range){
+  # rubin
+  var.b <- var(matrix[1, ], na.rm=TRUE)
+  var.w <- mean(matrix[2, ]^2, na.rm=TRUE)
+  est <- mean(matrix[1, ], na.rm=TRUE)
+  # winsorize if there are outliers
+  bp.se <- boxplot(matrix[2, ], range=range, plot=FALSE)
+  bp.est <- boxplot(matrix[1, ], range=range, plot=FALSE)
+  if (length(bp.se$out)>0){
+    var.w <- winsor.mean(matrix[2, ]^2, trim=0.25)
+  }
+  if (length(bp.est$out)>0) {
+    var.b <- winsor.var(matrix[1, ], trim=0.25)
+    est <- winsor.mean(matrix[1, ], trim=0.25)
+  }
+  var <- var.w+var.b+var.b/ncol(matrix)
+  return(list(est=est, var=var))
+}
+
