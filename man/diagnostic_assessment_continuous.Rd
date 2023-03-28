@@ -121,14 +121,29 @@ Wilcox, R. Introduction to Robust Estimation and Hypothesis Testing. 3rd Edition
 \code{\link{diagnostic_assessment_binary}}
 }
 \examples{
+library(ThresholdROCsurvival)
 data(NSCLC)
-# missing exclusion
+# missing exclusion (Youden index maximization, R=1)
 with(NSCLC, diagnostic_assessment_continuous(log(COL), OS,
-     ST, 1095, method="ME", method.thres="normal",
-     var.equal=FALSE, ci=TRUE, plot=TRUE))
-# multiple imputation
+                                             ST, 1095, method="ME", method.thres="normal",
+                                             var.equal=FALSE, ci=TRUE))
+\donttest{
+# multiple imputation (Youden index maximization, R=1)
 set.seed(2020)
 with(NSCLC, diagnostic_assessment_continuous(log(COL), OS,
-     ST, 1095, method="ICT", method.thres="normal",
-     var.equal=FALSE, m=50, ci=TRUE, plot=FALSE))
+                                             ST, 1095, method="ICT", method.thres="normal",
+                                             var.equal=FALSE, m=50, ci=TRUE))
+}
+
+# missing exclusion (R=1.1)
+with(NSCLC, diagnostic_assessment_continuous(log(COL), OS,
+                                             ST, 1095, method="ME", method.thres="normal",
+                                             var.equal=FALSE, ci=TRUE, R=1.1))
+\donttest{
+# multiple imputation (R=1.1)
+set.seed(2020)
+with(NSCLC, diagnostic_assessment_continuous(log(COL), OS,
+                                             ST, 1095, method="ICT", method.thres="normal",
+                                             var.equal=FALSE, m=50, ci=TRUE, R=1.1))
+}
 }
