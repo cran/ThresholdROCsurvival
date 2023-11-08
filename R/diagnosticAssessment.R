@@ -1,5 +1,5 @@
 
-diagnostic_assessment_binary <- function(binary.var, time, status, predict.time, method=c("ME", "ICT"), index=c("all", "sens", "spec"), m=10, ci=TRUE, alpha=0.05, range=3){
+diagnostic_assessment_binary <- function(binary.var, time, status, predict.time, method=c("USE", "ICT"), index=c("all", "sens", "spec"), m=10, ci=TRUE, alpha=0.05, range=3){
   # checks
   method <- match.arg(method)
   index <- match.arg(index)
@@ -30,10 +30,10 @@ diagnostic_assessment_binary <- function(binary.var, time, status, predict.time,
   out <- list()
   
   ##### ME
-  if (method=="ME"){
+  if (method=="USE"){
     # checks
-    if (sum(is.na(status.predict.time.NA))==0) warning("The estimation proceeds without missing exclusion.")
-    if (dim(table(status.predict.time.NA))!=2) stop("Missing exclusion leads to one single group. Estimation cannot proceed.")
+    if (sum(is.na(status.predict.time.NA))==0) warning("The estimation proceeds without unknown status exclusion.")
+    if (dim(table(status.predict.time.NA))!=2) stop("USE leads to one single group. Estimation cannot proceed.")
     ## sens
     if ("all" %in% index | "sens" %in% index){
       tab <- table(binary.var, status.predict.time.NA)
@@ -167,7 +167,7 @@ diagnostic_assessment_binary <- function(binary.var, time, status, predict.time,
 
 
 
-diagnostic_assessment_continuous <- function(cont.var, time, status, predict.time, method=c("ME", "ICT", "survivalROC"), index=c("all", "AUC", "threshold", "sens", "spec"), costs=NULL, R=NULL, method.thres=c("normal", "empirical"), var.equal=FALSE, lambda=0.05, m=10, ci=TRUE, plot=FALSE, alpha=0.05, B=1000, range=3, ...){
+diagnostic_assessment_continuous <- function(cont.var, time, status, predict.time, method=c("USE", "ICT", "survivalROC"), index=c("all", "AUC", "threshold", "sens", "spec"), costs=NULL, R=NULL, method.thres=c("normal", "empirical"), var.equal=FALSE, lambda=0.05, m=10, ci=TRUE, plot=FALSE, alpha=0.05, B=1000, range=3, ...){
   # checks
   method <- match.arg(method)
   method.thres <- match.arg(method.thres)
@@ -227,10 +227,10 @@ diagnostic_assessment_continuous <- function(cont.var, time, status, predict.tim
   }
   
   ##### ME
-  if (method=="ME"){
+  if (method=="USE"){
     # checks
-    if (sum(is.na(status.predict.time.NA))==0) warning("The estimation proceeds without missing exclusion.")
-    if (dim(table(status.predict.time.NA))!=2) stop("Missing exclusion leads to one single group. Estimation cannot proceed.")
+    if (sum(is.na(status.predict.time.NA))==0) warning("The estimation proceeds without unknown status exclusion.")
+    if (dim(table(status.predict.time.NA))!=2) stop("USE leads to one single group. Estimation cannot proceed.")
     ## AUC
     if ("all" %in% index | "AUC" %in% index){
       rocobj <- roc(status.predict.time.NA, cont.var, quiet=TRUE)

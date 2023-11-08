@@ -4,11 +4,11 @@
 Diagnostic ability assessment for continuous diagnostic tests
 }
 \description{
-This function estimates the AUC, optimal threshold, sensitivity and specificity at a fixed time-point t for continuous diagnostic tests with survival data by using three methods: 1) missing exclusion (ME), which excludes subjects with missing status at t; 2) imputation of censored times (ICT), a method based on multiple imputation; and 3) survivalROC, which uses a method based on time-dependent ROC curves. The status of the subjects at a certain time-point of interest t (the event occurred before or at t or not) is defined by the time-to-event variable.
+This function estimates the AUC, optimal threshold, sensitivity and specificity at a fixed time-point t for continuous diagnostic tests with survival data by using three methods: 1) unknown status exclusion (USE), which excludes subjects with missing status at t; 2) imputation of censored times (ICT), a method based on multiple imputation; and 3) survivalROC, which uses a method based on time-dependent ROC curves. The status of the subjects at a certain time-point of interest t (the event occurred before or at t or not) is defined by the time-to-event variable.
 }
 \usage{
 diagnostic_assessment_continuous(cont.var, time, status, predict.time,
-                                 method=c("ME", "ICT", "survivalROC"),
+                                 method=c("USE", "ICT", "survivalROC"),
                                  index=c("all", "AUC", "threshold", "sens", "spec"),
                                  costs=NULL, R=NULL,
                                  method.thres=c("normal", "empirical"),
@@ -30,7 +30,7 @@ censoring status codified as 0=censored, 1=event
 time-point of interest to define the subjects' status as event present or absent
 }
   \item{method}{
-method to be used in the estimation process. The user can choose between \code{ME} (missing exclusion), \code{ICT} (imputation of censored times) or \code{survivalROC} (time-dependent ROC curves). Default, \code{ME}  
+method to be used in the estimation process. The user can choose between \code{USE} (unknown status exclusion), \code{ICT} (imputation of censored times) or \code{survivalROC} (time-dependent ROC curves). Default, \code{ME}  
 }
   \item{index}{
 indices to be estimated. The user can choose one or more of the following: \code{AUC}, \code{threshold}, \code{sens} (sensitivity achieved by the optimal threshold), \code{spec} (specificity achieved by the optimal threshold). The option \code{all} (default) estimates all four indices
@@ -73,9 +73,9 @@ extra arguments to be passed to \code{plot()}
 }
 }
 \details{
-When \code{method} is \code{ME}: First, the algorithm determines the status of the subjects at time \code{predict.time}. Those censored subjects whose status could be not be determined (therefore, with missing status) are excluded from the analysis. Then, diagnostic ability is assessed with standard methods in the binary setting.
+When \code{method} is \code{USE}: First, the algorithm determines the status of the subjects at time \code{predict.time}. Those censored subjects whose status could be not be determined are excluded from the analysis. Then, diagnostic ability is assessed with standard methods in the binary setting.
 
-When \code{method} is \code{ICT}: First, the algorithm determines the status of the subjects at time \code{predict.time}. For those subjects whose status could not be determined because their censored time is lower than t (therefore, with missing status), we impute survival times using the method of Hsu et al (2006), that is implemented in the package \code{InformativeCensoring} (Ruau et al, 2020). The status of the subjects is then determined by these imputed times and is used to estimate the indices in \code{index}. Confidence intervals are calculated using the standard error proposed by Rubin (1987).
+When \code{method} is \code{ICT}: First, the algorithm determines the status of the subjects at time \code{predict.time}. For those subjects whose status could not be determined because their censored time is lower than t, we impute survival times using the method of Hsu et al (2006), that is implemented in the package \code{InformativeCensoring} (Ruau et al, 2020). The status of the subjects is then determined by these imputed times and is used to estimate the indices in \code{index}. Confidence intervals are calculated using the standard error proposed by Rubin (1987).
 
 When \code{method} is \code{survivalROC}: Diagnostic ability is assessed by constructing the ROC curve at time t through time-dependent ROC curves (Heagerty et al, 2000). Confidence intervals are obtained using normal and percentile bootstrap. In normal bootstrap, the bootstrap is used to obtain an estimate of the standard error of the threshold estimate, and then the standard normal distribution is used for the confidence interval calculation. In percentile bootstrap, \code{B} bootstrap resamples are generated and the threshold is estimated in all of them. Then, the confidence interval is calculated as the empirical 1-\code{alpha}/2 and 1+\code{alpha}/2 percentiles of the \code{B} bootstrap estimates.
 
@@ -93,7 +93,7 @@ An object of class \code{diagnostic_assessment}, which is a list with the follow
 \item{spec }{Specificity estimate (achieved by the optimal threshold) and its corresponding confidence interval (if \code{ci=TRUE}), only if specificity has been included in \code{index}}
 \item{method }{\code{method} used in the estimation}
 \item{alpha }{significance level provided by the user}
-\item{data }{A data.frame containing the following columns previously provided by the user: \code{cont.var}, \code{time} and \code{status}, and a new column \code{statusNA}, which contains the status of the subjects at time \code{predict.time} (0=no event, 1=event, \code{NA}=missing)}
+\item{data }{A data.frame containing the following columns previously provided by the user: \code{cont.var}, \code{time} and \code{status}, and a new column \code{statusNA}, which contains the status of the subjects at time \code{predict.time} (0=no event, 1=event, \code{NA}=unknown)}
 }
 \references{
 Heagerty PJ, Lumley T, Pepe MS. Time-Dependent ROC Curves for Censored Survival Data and a Diagnostic Marker. Biometrics 2000; 56(2): 337-344. doi: 10.1111/j.0006-341X.2000.00337.x
@@ -123,9 +123,9 @@ Wilcox, R. Introduction to Robust Estimation and Hypothesis Testing. 3rd Edition
 \examples{
 library(ThresholdROCsurvival)
 data(NSCLC)
-# missing exclusion (Youden index maximization, R=1)
+# unknown status exclusion (Youden index maximization, R=1)
 with(NSCLC, diagnostic_assessment_continuous(log(COL), OS,
-                                             ST, 1095, method="ME", method.thres="normal",
+                                             ST, 1095, method="USE", method.thres="normal",
                                              var.equal=FALSE, ci=TRUE))
 \donttest{
 # multiple imputation (Youden index maximization, R=1)
@@ -137,10 +137,10 @@ with(NSCLC, diagnostic_assessment_continuous(log(COL), OS,
 
 # missing exclusion (R=1.1)
 with(NSCLC, diagnostic_assessment_continuous(log(COL), OS,
-                                             ST, 1095, method="ME", method.thres="normal",
+                                             ST, 1095, method="USE", method.thres="normal",
                                              var.equal=FALSE, ci=TRUE, R=1.1))
 \donttest{
-# multiple imputation (R=1.1)
+# unknown status exclusion (R=1.1)
 set.seed(2020)
 with(NSCLC, diagnostic_assessment_continuous(log(COL), OS,
                                              ST, 1095, method="ICT", method.thres="normal",

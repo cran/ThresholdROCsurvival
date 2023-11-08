@@ -74,7 +74,8 @@ minCostSurvivalROC <- function(cont.var, time, status, predict.time, rho, costs,
 
 
 
-#### from package survivalROC, by P Heagerty and P Saha-Chaudhuri
+#### from package survivalROC, by P Heagerty and P Saha-Chaudhuri, added here because
+## we were warned that survivalROC would be archived
 ##
 ## survivalROC.R
 ##
