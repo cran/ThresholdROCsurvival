@@ -191,10 +191,12 @@ diagnostic_assessment_continuous <- function(cont.var, time, status, predict.tim
   if (!all(index %in% c("all", "AUC", "threshold", "sens", "spec"))) stop("Invalid value in 'index'")
   if (("sens" %in% index | "spec" %in% index) & !("threshold" %in% index)) stop("'sens' and 'spec' require threshold estimation")
   
-  # status amb missings
-  status.predict.time.NA <- ifelse(time>predict.time | (time==predict.time & status==0), 0, ifelse(status==1, 1, NA))
-  if (sum(is.na(status.predict.time.NA))==0) warning("There are no NAs in the status at 'predict.time'.")
-
+  if (method %in% c("USE", "ICT")){
+    # status amb missings
+    status.predict.time.NA <- ifelse(time>predict.time | (time==predict.time & status==0), 0, ifelse(status==1, 1, NA))
+    if (sum(is.na(status.predict.time.NA))==0) warning("There are no NAs in the status at 'predict.time'.")
+  }
+  
   # output
   out <- list()
   
@@ -441,7 +443,7 @@ diagnostic_assessment_continuous <- function(cont.var, time, status, predict.tim
       if (ci){
         out$threshold <- c(est=result.th$cut.est$optimum$cutoff, LL.norm=result.th$CI["normal", "lower"], UL.norm=result.th$CI["normal", "upper"], LL.perc=result.th$CI["percentile", "lower"], UL.perc=result.th$CI["percentile", "upper"])
       }else{
-        out$threshold <- c(est=auc, LL=NA, UL=NA)
+        out$threshold <- c(est=result.th$cut.est$optimum$cutoff, LL=NA, UL=NA)
       }
     }
     if ("all" %in% index | "sens" %in% index){
@@ -481,7 +483,11 @@ diagnostic_assessment_continuous <- function(cont.var, time, status, predict.tim
   # output
   out$method <- method
   out$alpha <- alpha
-  out$data <- data.frame(cont.var, time, status, statusNA=status.predict.time.NA)
+  if (method %in% c("USE", "ICT")){
+    out$data <- data.frame(cont.var, time, status, statusNA=status.predict.time.NA)
+  }else{
+    out$data <- data.frame(cont.var, time, status)
+  }
   class(out) <- "diagnostic_assessment"
   return(out)
 }

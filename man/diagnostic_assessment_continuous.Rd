@@ -135,15 +135,22 @@ with(NSCLC, diagnostic_assessment_continuous(log(COL), OS,
                                              var.equal=FALSE, m=50, ci=TRUE))
 }
 
-# missing exclusion (R=1.1)
+# unknown status exclusion (R=1.1)
 with(NSCLC, diagnostic_assessment_continuous(log(COL), OS,
                                              ST, 1095, method="USE", method.thres="normal",
                                              var.equal=FALSE, ci=TRUE, R=1.1))
 \donttest{
-# unknown status exclusion (R=1.1)
+# multiple imputation (R=1.1)
 set.seed(2020)
 with(NSCLC, diagnostic_assessment_continuous(log(COL), OS,
                                              ST, 1095, method="ICT", method.thres="normal",
                                              var.equal=FALSE, m=50, ci=TRUE, R=1.1))
+}
+\donttest{
+# time-dependent ROC curves (Youden index maximization, R=1)
+set.seed(2020)
+with(NSCLC, diagnostic_assessment_continuous(log(COL), OS,
+                                             ST, 1095, method="survivalROC",
+                                             ci=TRUE, R=1, B=500))
 }
 }

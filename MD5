@@ -1,9 +1,9 @@
-366ee6beeaa65fa22e01ea2fb94c48a8 *DESCRIPTION
+f4c6180c6522a69e3e2856548427a853 *DESCRIPTION
 94c8887c054d716dfc87d38f65d373c0 *NAMESPACE
 9e8dd97aadf02911f4bcc55f44c7a20e *R/auxiliars.R
-c721be1e1c843c4b92f3ca0f66cc3cc4 *R/diagnosticAssessment.R
+2a542d50d0420839340f9468aeb35f22 *R/diagnosticAssessment.R
 9dee8192561ca9663b4ce4a39c89b15c *data/NSCLC.rda
 76f4c4f9aac847f7fbcb770ad7f98430 *man/NSCLC.Rd
 801a585b4f2974679c1e46cdb8647395 *man/ThresholdROCsurvival-package.Rd
 fa3d37f043aeb043e4f86d5479ba260b *man/diagnostic_assessment_binary.Rd
-67d4a92ef89cd8b9f05c14e0dfbf5dc9 *man/diagnostic_assessment_continuous.Rd
+8ce2a0ee2a711b83486c74841feadccd *man/diagnostic_assessment_continuous.Rd
